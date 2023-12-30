@@ -1,0 +1,12 @@
+<!-- In auctions/templates/auctions/categories.html -->
+
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+  <h2>All Categories</h2>
+  <ul>
+    {% for category in categories %}
+      <li>{{ category.name }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

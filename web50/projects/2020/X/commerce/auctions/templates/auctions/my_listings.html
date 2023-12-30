@@ -1,0 +1,30 @@
+<!-- auctions/templates/auctions/my_listings.html -->
+{% extends 'auctions/layout.html' %}
+
+{% block title %}My Listings{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h2 class="mb-4">My Listings</h2>
+                {% if my_listings %}
+                    <ul class="list-group">
+                        {% for listing in my_listings %}
+                            <li class="list-group-item">
+                                <a href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
+                                {% if listing.active %}
+                                    <span class="badge badge-success">Active</span>
+                                {% else %}
+                                    <span class="badge badge-secondary">Closed</span>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>You haven't created any listings yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

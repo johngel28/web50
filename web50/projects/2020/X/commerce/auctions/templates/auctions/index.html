@@ -1,0 +1,17 @@
+{% extends 'auctions/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <h1 class="display-4">Welcome to Auctions!</h1>
+                <p class="lead">Explore unique listings and engage in thrilling auctions.</p>
+                <hr class="my-4">
+                <p>Ready to start? Check out the active listings now!</p>
+                <a class="btn btn-primary btn-lg" href="{% url 'active_listings' %}" role="button">View Active Listings</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

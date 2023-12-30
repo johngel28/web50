@@ -1,0 +1,30 @@
+<!-- auctions/templates/auctions/active_listings.html -->
+{% extends "auctions/layout.html" %}
+
+{% block title %}Active Listings{% endblock %}
+
+{% block body %}
+  <h2>Active Listings</h2>
+
+  <!-- Search form -->
+  <form method="get" action="{% url 'active_listings' %}" class="mb-4">
+    <div class="input-group">
+      <input type="text" class="form-control" name="q" placeholder="Search listings" value="{{ search_query }}">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+      </div>
+    </div>
+  </form>
+
+  {% if listings %}
+    <ul class="list-group">
+      {% for listing in listings %}
+        <li class="list-group-item">
+          <a href="{% url 'listing' listing.id %}">{{ listing.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No active listings found.</p>
+  {% endif %}
+{% endblock %}
