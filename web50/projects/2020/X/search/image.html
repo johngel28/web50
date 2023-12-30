@@ -23,18 +23,23 @@
             margin-top: 20px;
         }
 
-        input[type="text"],
-        input[type="image"] {
+        input[type="text"] {
             margin: 5px;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 15px;
             border: 1px solid #dfe1e5;
             background-color: #fff;
             vertical-align: middle; /* Align vertically in the middle */
         }
 
-        input[type="image"] {
-            cursor: pointer; /* Provide a pointer cursor for the image button */
+        input[type="submit"] {
+            margin: 5px;
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px solid #dfe1e5;
+            background-color: blue;
+            color: white; /* White text for Image Search button */
+            cursor: pointer;
         }
 
         a {
@@ -46,13 +51,14 @@
     </style>
 </head>
 <body>
-	<br><br><br>
+    <br><br><br>
     <header>
         <img src="https://www.google.com.ph/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google Images Logo">
     </header>
-    <form action="https://www.google.com/search" method="image">
+    <form action="https://www.google.com/search" method="GET">
         <input type="text" name="q" placeholder="Search Images">
-        <input type="image" src="search-icon.png" alt="Search" width="60" height="30">
+        <input type="hidden" name="tbm" value="isch"> 
+        <input type="submit" value="Image Search">
         <a href="index.html">Back to Google Search</a>
     </form>
 </body>
