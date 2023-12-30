@@ -15,7 +15,7 @@ input[type="text"],
 input[type="image"] {
     margin: 5px;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 15px;
     border: 1px solid #dfe1e5;
     background-color: #fff;
 	text-align: left;
