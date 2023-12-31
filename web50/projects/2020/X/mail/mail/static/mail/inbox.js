@@ -90,13 +90,14 @@ function view_email(email_id, mailbox) {
       mark_email_as_read(email_id);
 
       // If the email is in the inbox, add buttons for archiving and unarchiving
-      if (mailbox === 'inbox') {
-        const archiveButton = document.createElement('button');
-        archiveButton.className = 'btn btn-sm btn-outline-primary';
-        archiveButton.innerHTML = email.archived ? 'Unarchive' : 'Archive';
-        archiveButton.addEventListener('click', () => toggle_archive(email_id, email.archived));
-        document.querySelector('#emails-view').appendChild(archiveButton);
-      }
+	if (mailbox === 'inbox' || mailbox === 'archive') {
+		const archiveButton = document.createElement('button');
+		archiveButton.className = 'btn btn-sm btn-outline-primary';
+		archiveButton.innerHTML = email.archived ? 'Unarchive' : 'Archive';
+		archiveButton.addEventListener('click', () => toggle_archive(email_id, email.archived));
+		document.querySelector('#emails-view').appendChild(archiveButton);
+	}
+
     });
 }
 
