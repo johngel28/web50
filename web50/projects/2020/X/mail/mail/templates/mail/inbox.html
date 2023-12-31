@@ -27,9 +27,13 @@
                 <input class="form-control" id="compose-subject" placeholder="Subject">
             </div>
             <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-            <input type="submit" class="btn btn-primary"/>
+            <input type="submit" class="btn btn-primary" id="compose-submit-button" onclick="disableSubmit()" />
+
         </form>
     </div>
+	<div id="email-content-view" style="display: none;">
+		<!-- Content of the email will be dynamically added here -->
+	</div>	
 {% endblock %}
 
 {% block script %}
