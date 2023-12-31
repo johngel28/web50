@@ -1,5 +1,100 @@
-{% extends "network/layout.html" %}
+<!-- network/templates/network/index.html -->
+{% extends 'network/layout.html' %}
 
 {% block body %}
-    TODO
+<head>
+ {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+</head>
+  <div class="container">
+    <h2>All Posts</h2>
+	<br>
+{% if user.is_authenticated %}
+  <div class="container">
+    <h2>Search Users</h2>
+    <form method="get" action="{% url 'search_users' %}">
+      <input type="text" name="q" placeholder="Search users">
+      <button type="submit" class="btn btn-info">Search</button>
+    </form>
+  </div>
+  <br>
+
+  <!-- New Post Form -->
+  <form method="post" action="{% url 'new_post' %}">
+    {% csrf_token %}
+    <textarea name="content" class="form-control mb-2" placeholder="Write a new post..."></textarea>
+    <button type="submit" class="btn btn-info">Post</button>
+  </form>
+{% endif %}
+
+    {% for post in posts %}
+      <div class="border p-3 mb-3">
+        <p>{{ post.user.username }}:</p>
+        <p>{{ post.content }}</p>
+        <p>{{ post.timestamp }}</p>
+        
+        {% if user.is_authenticated %}
+          {% if user == post.user %}
+            <!-- Edit button for the user's posts -->
+            <a href="{% url 'edit_post' post.id %}" class="btn btn-secondary btn-sm">Edit</a>
+          {% endif %}
+          <!-- Like button and counter -->
+<button class="btn btn-link" id="like-btn-{{ post.id }}" onclick="toggleLike({{ post.id }})">
+  <img src="{% static 'network/heart.png' %}" alt="Like" width="20" height="20">
+</button>
+
+          
+        {% endif %}
+		Likes: <span id="like-counter-{{ post.id }}">{{ post.likes.count }}</span>
+      </div>
+    {% endfor %}
+  </div>
+<!-- Add this after displaying posts -->
+<div class="pagination">
+    <span class="step-links">
+        {% if posts.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ posts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ posts.number }} of {{ posts.paginator.num_pages }}.
+        </span>
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">next</a>
+            <a href="?page={{ posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+  function toggleLike(postId) {
+	console.log('Post ID:', postId);
+    // Send an AJAX request to the server to toggle the like status
+    $.ajax({
+      type: 'POST',
+      url: '{% url "like_unlike_post" post_id=0 %}'.replace('0', postId),
+      data: {
+        'post_id': postId,
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+      },
+      success: function (data) {
+        // Update the like counter and button style on success
+        const likeCounter = $(`#like-counter-${postId}`);
+        const newCount = parseInt(likeCounter.text()) + (data.liked ? 1 : -1);
+        likeCounter.text(newCount);
+
+        // Toggle button style based on the updated like status
+        const likeButton = $(`#like-btn-${postId}`);
+        likeButton.toggleClass('text-danger', data.liked);
+      },
+      error: function (error) {
+        console.log('Error:', error);
+      }
+    });
+  }
+</script>
+
 {% endblock %}

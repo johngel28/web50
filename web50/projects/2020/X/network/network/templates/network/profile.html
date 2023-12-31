@@ -1,0 +1,53 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+  <div class="container">
+    <h2>{{ profile_user.username }}'s Profile</h2>
+
+    <p>Followers: {{ followers_count }}</p>
+    <p>Following: {{ following_count }} 
+      {% if user.is_authenticated and user != profile_user %}
+        {% if is_following %}
+          <form method="post" action="{% url 'follow_unfollow' username=profile_user.username %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Unfollow</button>
+          </form>
+        {% else %}
+          <form method="post" action="{% url 'follow_unfollow' username=profile_user.username %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Follow</button>
+          </form>
+        {% endif %}
+      {% endif %}
+    </p>
+
+    <h3>Posts</h3>
+    {% for post in user_posts %}
+      <div class="border p-3 mb-3">
+        <p>{{ post.user.username }}:</p>
+        <p>{{ post.content }}</p>
+        <p>{{ post.timestamp }}</p>
+        <!-- Additional post details as needed -->
+      </div>
+    {% endfor %}
+
+    <!-- Pagination links -->
+    <div class="pagination">
+      <span class="step-links">
+        {% if user_posts.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ user_posts.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+          Page {{ user_posts.number }} of {{ user_posts.paginator.num_pages }}.
+        </span>
+
+        {% if user_posts.has_next %}
+          <a href="?page={{ user_posts.next_page_number }}">next</a>
+          <a href="?page={{ user_posts.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+      </span>
+    </div>
+  </div>
+{% endblock %}

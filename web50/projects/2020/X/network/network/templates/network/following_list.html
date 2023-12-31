@@ -1,0 +1,24 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+  <div class="container">
+    <h2>Following List</h2>
+	<div class="container">
+	  <h2>Search Users</h2>
+		<form method="get" action="{% url 'search_users' %}">
+		  <input type="text" name="q" placeholder="Search users">
+		  <button type="submit" class="btn btn-info">Search</button>
+		</form>
+	</div>
+
+    {% for user in following_users %}
+      <div class="border p-3 mb-3">
+        <p>{{ user.username }}</p>
+        <form method="post" action="{% url 'follow_unfollow' username=user.username %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Unfollow</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

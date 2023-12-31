@@ -1,0 +1,22 @@
+<!-- templates/network/search_users.html -->
+{% extends 'network/layout.html' %}
+
+{% block body %}
+  <div class="container">
+    <h2>User Search Results</h2>
+
+    {% if error_message %}
+      <p>{{ error_message }}</p>
+    {% else %}
+      {% if results %}
+        <ul>
+          {% for user in results %}
+            <li><a href="{% url 'profile' username=user.username %}">{{ user.username }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No users found</p>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endblock %}
