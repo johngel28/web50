@@ -1,0 +1,61 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}! <a href="{% url 'logout' %}">Logout</a></p>
+
+        <div>
+            <h2>Options:</h2>
+         
+<ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+	<li><a href="{% url 'parking_entry' %}">Parking Entry</a></li>
+    <li><a href="{% url 'transaction_history' %}">Transaction History</a></li>
+    <li><a href="{% url 'user_admin' %}">User Admin</a></li>
+</ul>
+    
+        </div>
+
+        <div>
+            <h2>Recent Transactions:</h2>
+            <table border="1">
+                <tr>
+                    <th>Plate Number</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Vehicle Type</th>
+                    <th>Parking Fee</th>
+                </tr>
+                {% for entry in entries %}
+                    <tr>
+                        <td>{{ entry.plate_number }}</td>
+                        <td>{{ entry.time_in }}</td>
+                        <td>{{ entry.time_out }}</td>
+                        <td>{{ entry.vehicle_type }}</td>
+                        <td>{{ entry.parking_fee }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% else %}
+        <h2>Login</h2>
+        {% if request.POST and not user.is_authenticated %}
+            <p>Login failed. Please check your credentials.</p>
+        {% endif %}
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+            <br>
+            <input type="submit" value="Login">
+        </form>
+    {% endif %}
+</body>
+</html>

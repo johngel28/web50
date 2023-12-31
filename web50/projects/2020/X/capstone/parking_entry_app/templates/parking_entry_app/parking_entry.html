@@ -1,0 +1,30 @@
+<!-- parking_entry_app/templates/parking_entry_app/parking_entry.html -->
+{% extends 'base.html' %}
+
+{% block title %}Parking Entry{% endblock %}
+
+{% block header %}Parking Entry Header{% endblock %}
+
+{% block content %}
+    <h1>Parking Entry</h1>
+    <!-- Your specific content for this page goes here -->
+    <form method="post">
+        {% csrf_token %}
+        <label for="plate_number">Plate Number:</label>
+        <input type="text" name="plate_number" required><br>
+
+        <label for="vehicle_type">Vehicle Type:</label>
+        <select name="vehicle_type" required>
+            <option value="Car">Car</option>
+            <option value="Motorcycle">Motorcycle</option>
+            <option value="Truck">Truck</option>
+            <option value="Tricycle">Tricycle</option>
+            <option value="e-Bike">e-Bike</option>
+            <option value="Bicycle">Bicycle</option>
+        </select><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    {% include 'parking_entry_app/parking_entry_list.html' with entries=entries %}
+{% endblock %}

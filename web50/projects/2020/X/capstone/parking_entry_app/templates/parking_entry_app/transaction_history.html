@@ -1,0 +1,73 @@
+<!-- parking_entry_app/templates/parking_entry_app/transaction_history.html -->
+{% extends 'base.html' %}
+
+{% block title %}Transaction History{% endblock %}
+
+{% block header %}Transaction History Header{% endblock %}
+
+{% block content %}
+  {% if entries %}
+    <h1>Transaction History</h1>
+
+    <form method="get" action="{% url 'transaction_history' %}" class="form-inline mb-4">
+      {% csrf_token %}
+      <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Enter search criteria">
+        <button type="submit" class="btn btn-primary">Search</button>
+      </div>
+    </form>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Plate Number</th>
+            <th>Vehicle Type</th>
+            <th>Status</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+            <th>Parking Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in entries %}
+            <tr>
+              <td>{{ entry.plate_number }}</td>
+              <td>{{ entry.vehicle_type }}</td>
+              <td>{{ entry.status }}</td>
+              <td>{{ entry.time_in }}</td>
+              <td>{% if entry.status == 'OUT' %}{{ entry.time_out }}{% endif %}</td>
+              <td class="parking-fee" data-vehicle-type="{{ entry.vehicle_type }}"></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        var feeElements = document.querySelectorAll('.parking-fee');
+
+        feeElements.forEach(function(element) {
+          var vehicleType = element.dataset.vehicleType;
+          var fee = calculateParkingFee(vehicleType);
+          element.textContent = fee;
+        });
+
+        function calculateParkingFee(vehicleType) {
+          var feeMapping = {
+            'Car': 50,
+            'Motorcycle': 30,
+            'Truck': 0,
+            'Tricycle': 40,
+            'e-Bike': 30,
+            'Bicycle': 20,
+          };
+          return feeMapping[vehicleType] || 0;
+        }
+      });
+    </script>
+  {% else %}
+    <p></p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+{% for entry in entries %}
+    {{ entry.plate_number }} - {{ entry.vehicle_type }}<br>
+{% endfor %}	
+        <p>Welcome, {{ user.username }}! <a href="{% url 'logout' %}">Logout</a></p>
+
+        <div>
+
+            {% block content %}
+                {# Include transaction_history.html instead of parking_entry_list.html #}
+                {% with transaction_entries=transaction_history %}
+                    {% include 'parking_entry_app/transaction_history.html' with form=form entries=transaction_entries %}
+                {% endwith %}
+            {% endblock %}
+            
+            {% if transaction_entries %}
+              <p>Total Car: {{ transaction_entries.total_car }}</p>
+              <p>Total e-Bike: {{ transaction_entries.total_ebike }}</p>
+              <p>Total Truck: {{ transaction_entries.total_truck }}</p>
+              <p>Total Tricycle: {{ transaction_entries.total_tricycle }}</p>
+              <p>Total Transactions: {{ transaction_entries|length }}</p>            {% endif %}
+
+        </div>
+    {% else %}
+        <h2>Login</h2>
+        {% if request.POST and not user.is_authenticated %}
+            <p>Login failed. Please check your credentials.</p>
+        {% endif %}
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+            <br>
+            <input type="submit" value="Login">
+        </form>
+    {% endif %}
+</body>
+</html>

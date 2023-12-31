@@ -1,0 +1,35 @@
+<!-- base.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>{% block title %}My Website{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>{% block header %}My Website Header{% endblock %}</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'parking_entry' %}">Parking Entry</a></li>
+                <li><a href="{% url 'transaction_history' %}">Transaction History</a></li>
+                <li><a href="{% url 'user_admin' %}">User Admin</a></li>
+                <!-- Add more links as needed -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <!-- Your footer content goes here -->
+    </footer>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

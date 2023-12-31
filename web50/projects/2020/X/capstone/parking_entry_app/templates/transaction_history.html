@@ -1,0 +1,24 @@
+<!-- parking_entry_app/templates/parking_entry_app/transaction_history.html -->
+{% extends 'base.html' %}
+
+{% block title %}Transaction History{% endblock %}
+
+{% block header %}Transaction History Header{% endblock %}
+
+{% block content %}
+  <h1>Transaction History</h1>
+
+  <form method="get" class="form-inline mb-4">
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+
+  <ul>
+    {% for entry in entries %}
+      <li>
+        {{ entry.plate_number }} - {{ entry.vehicle_type }} - Status: {{ entry.status }} -
+        {% if entry.status == 'OUT' %}Time Out: {{ entry.time_out }}{% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

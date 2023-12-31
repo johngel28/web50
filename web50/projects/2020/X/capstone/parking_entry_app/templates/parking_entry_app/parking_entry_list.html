@@ -1,0 +1,49 @@
+{% block content %}
+  {% if entries %}
+    <h2>Your Current Entries</h2>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Plate Number</th>
+            <th>Vehicle Type</th>
+            <th>Status</th>
+            <th>Time In</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in entries %}
+            <tr>
+              <td>{{ entry.plate_number }}</td>
+              <td>{{ entry.vehicle_type }}</td>
+              <td>{% if entry.time_out %}OUT{% else %}IN{% endif %}</td>
+              <td>{{ entry.time_in }}</td>
+              <td>
+                <a href="{% url 'exit_parking' entry.id %}" class="btn btn-primary">Out</a>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ entry.id }})">Delete</button>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      function confirmDelete(entryId) {
+        // Use JavaScript confirm function
+        var result = confirm("Are you sure you want to delete this transaction? This action cannot be undone.");
+
+        // If user confirms, perform the actual deletion
+        if (result) {
+          // You may want to use AJAX to send a request to your server
+          // For now, let's assume the entryId is passed to your delete view
+          window.location.href = "{% url 'delete_entry' %}?entry_id=" + entryId;
+        }
+      }
+    </script>
+  {% else %}
+    <p>No entries found.</p>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,24 @@
+<!-- templates/parking_entry_app/user_admin.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Admin</title>
+</head>
+<body>
+<ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+	<li><a href="{% url 'parking_entry' %}">Parking Entry</a></li>
+    <li><a href="{% url 'transaction_history' %}">Transaction History</a></li>
+    <li><a href="{% url 'user_admin' %}">User Admin</a></li>
+</ul>
+    <h1>User Admin</h1>
+    
+    <h2 id="change-password">Change Password</h2>
+    <form method="post" action="{% url 'user_admin' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="change_password">Change Password</button>
+    </form>
+</body>
+</html>
